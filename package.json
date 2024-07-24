@@ -11,7 +11,7 @@
     "@mdi/font": "7.4.47",
     "core-js": "^3.37.1",
     "roboto-fontface": "*",
-    "swiper": "^11.1.5",
+    "swiper": "^11.1.6",
     "vue": "^3.4.31",
     "vuetify": "^3.6.11"
   },
