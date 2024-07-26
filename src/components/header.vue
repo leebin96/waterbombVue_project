@@ -46,6 +46,5 @@ header .logo span {
   font-size: 20px;
   font-weight: 500;
   line-height: 7px;
-  /* 53.846% */
 }
 </style>

@@ -1,38 +1,55 @@
 <template>
-  <div>
-
-    <body>
-      <div class="loginBox">
+  <div class="login">
+    <div class="main">
+      <div class="logoDiscription">
         <RouterLink to="/" class="logo">
           <span>WATERBOMB</span>
         </RouterLink>
-        <div class="socialGroup">
-          <div class="iconGroup">
-            <v-btn stacked variant="text" class="iconInfo">
-              <img src="/src/assets/image/iogin/kakao.png" alt="카카오 로고"><span>카카오</span>
-            </v-btn>
-            <v-btn stacked variant="text">
-              <img src="/src/assets/image/iogin/facebook.png" alt="페이스북 로고"><span>페이스북</span>
-            </v-btn>
-            <v-btn stacked variant="text">
-              <img src="/src/assets/image/iogin/naver.png" alt="네이버 로고"><span>네이버</span>
-            </v-btn>
-            <v-btn stacked variant="text">
-              <img src="/src/assets/image/iogin/google.png" alt="구글 로고"><span>구글</span>
-            </v-btn>
-            <v-btn stacked variant="text">
-              <img src="/src/assets/image/iogin/apple.png" alt="애플 로고"><span>애플</span>
-            </v-btn>
-            <v-btn stacked variant="text">
-              <img src="/src/assets/image/iogin/github.png" alt="깃허브 로고"><span>깃허브</span>
-            </v-btn>
-          </div>
-          <div class="guestBtnGroup">
-            <a href="/src/assets/image/payment_guest.html"><button class="guestPurchaseBtn">비회원 구매하기</button></a>
-          </div>
-        </div>
+        <span class="energy">ENERGY !</span>
+        <span>
+          넘치는 당신의 에너지를 멋지게 표현하여 열정적이고 즐거운 <br>플레이어가 되어보세요 !
+        </span>
       </div>
-    </body>
+      <div class="socialLogin">
+        <h3>간편로그인</h3>
+        <v-btn stacked class="google">
+          <div class="snsLogo snsImg01"></div>
+          <span>google</span>
+        </v-btn>
+        <v-btn stacked class="github">
+          <div class="snsLogo snsImg02"></div>
+          <span>github</span>
+        </v-btn>
+        <v-btn stacked class="facebook">
+          <div class="snsLogo snsImg03"></div>
+          <span>facebook</span>
+        </v-btn>
+        <v-btn stacked class="apple">
+          <div class="snsLogo snsImg04"></div>
+          <span>apple</span>
+        </v-btn>
+        <v-btn stacked class="kakao">
+          <div class="snsLogo snsImg05"></div>
+          <span>kakao</span>
+        </v-btn>
+        <v-btn stacked class="naver">
+          <div class="snsLogo snsImg06"></div>
+          <span>naver</span>
+        </v-btn>
+      </div>
+      <div class="guestBt">
+        <RouterLink to="/myticket" class="textDecoNone">
+          <v-btn>
+            비회원 조회
+          </v-btn>
+        </RouterLink>
+        <RouterLink to="/payment" class="textDecoNone">
+          <v-btn>
+            비회원 구매
+          </v-btn>
+        </RouterLink>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -50,6 +67,12 @@ export default {
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap");
+@font-face {
+  font-family: "MoveSans-Bold";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/2405-2@1.0/MoveSans-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+}
 * {
   margin: 0;
   padding: 0;
@@ -69,80 +92,139 @@ li {
   padding: 0;
   margin: 0;
 }
-body,
-html {
+.login {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-width: 320px;
-  width: 100%;
   height: 100%;
 }
-.loginBox {
+.main {
   display: flex;
-  flex-direction: column;
-  gap: 40px;
   width: 300px;
-  height: 570px;
-  padding: 20px;
-  background-color: black;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  text-align: center;
+  height: auto;
+  padding: 90px 10px 50px 10px;
+  flex-direction: column;
+  align-items: center;
+  gap: 60px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.70);
+  box-shadow: 0px 40px 49.85px 0px rgba(0, 0, 0, 0.10);
+  border: 1px solid #f1efef;
+}
+.logoDiscription {
+  display: flex;
+  width: 200px;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
 }
 .logo {
   display: flex;
+  height: 55px;
   justify-content: center;
   align-items: center;
-  height: 45px;
+  align-self: stretch;
   border-radius: 5px;
-  border: 3px solid #ffbf00;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  border: 3px solid #FFBF00;
   text-decoration: none;
 }
 .logo span {
-  color: #ffbf00;
+  color: #FFBF00;
   font-family: "MoveSans-Bold";
-  font-size: 30px;
-  font-weight: 500;
-  line-height: 7px;
+  font-size: 28px;
+  font-weight: 300;
+  line-height: 21px;
 }
-.socialGroup {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  margin-top: 20px;
+.energy {
+  width: 100%;
+  color: #8CA9F3;
+  font-size: 20px;
+  font-weight: 900;
+  text-align: start;
 }
-.iconGroup {
+.logoDiscription span:nth-of-type(2) {
+  color: #8CA9F3;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: start;
+}
+.socialLogin {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  padding: 15px 0;
-  gap: 50px;
+  width: auto;
+  position: relative;
+  padding: 20px 0;
+  row-gap: 20px;
+  border-top: 1px solid #CBCBCB;
+}
+.socialLogin > h3 {
+  position: absolute;
+  top: -14px;
+  left: 72px;
   background-color: #fff;
+  width: 140px;
+  text-align: center;
+  color: #CBCBCB;
+  font-size: 16px;
 }
-.guestBtnGroup {
+.v-btn {
   display: flex;
-  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  padding: 9px;
+  width: 70px;
+  height: 70px;
+  border-radius: 28.458px;
+  background: #FFF;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
-.guestPurchaseBtn {
+.snsLogo {
+  width: 35px;
+  height: 35px;
+}
+.snsImg01 {
+  background: url(/src/assets/image/login/google.png) no-repeat 100% / cover;
+}
+.snsImg02 {
+  background: url(/src/assets/image/login/github.png) no-repeat 100% / cover;
+}
+.snsImg03 {
+  background: url(/src/assets/image/login/facebook.png) no-repeat 100% / cover;
+}
+.snsImg04 {
+  background: url(/src/assets/image/login/apple.png) no-repeat 100% / cover;
+}
+.snsImg05 {
+  background: url(/src/assets/image/login/kakao.png) no-repeat 100% / cover;
+}
+.snsImg06 {
+  background: url(/src/assets/image/login/naver.png) no-repeat 100% / cover;
+}
+.socialLogin .v-btn span {
+  font-size: 10px;
+  color: #000;
+}
+.guestBt {
   display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+.textDecoNone {
+  text-decoration: none;
+}
+.guestBt .v-btn {
+  display: flex;
+  width: 110px;
+  height: 30px;
+  padding: 6px 26px;
   justify-content: center;
   align-items: center;
-  width: 122px;
-  height: 29px;
+  gap: 10px;
   border-radius: 30px;
-  background: #fff;
-  border-color: transparent;
-  color: #000;
-  font-size: 16px;
-  line-height: 23px;
-  /* 164.286% */
-}
-.guestPurchaseBtn:hover {
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
-  cursor: pointer;
+  background: #F1F1F1;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  color: #686868;
 }
 </style>
