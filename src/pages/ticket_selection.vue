@@ -26,7 +26,6 @@
               <v-number-input variant="outlined" control-variant="split" inset class="countPickBt"
                 @input="updateQuantity"></v-number-input>
             </v-col>
-
             <v-col cols="12">
               <div class="selection-info">
                 <span>선택 정보</span>
@@ -37,7 +36,6 @@
                 </div>
               </div>
             </v-col>
-
             <v-col cols="12">
               <div class="price">
                 <span>총 결제 금액</span>
@@ -276,58 +274,58 @@ p {
   line-height: 12px;
 }
 .card:nth-child(1) {
-  background: url(/src/assets/image/ticket_selection/seoul1.jpg) no-repeat 50% 50% / cover;
+  background: url(/src/assets/image/ticket_selection/seoul1.png) no-repeat 50% 50% / cover;
 }
 .card:nth-child(1):hover {
-  background: url(/src/assets/image/ticket_selection/seoul2.jpg) no-repeat 50% 50% / cover;
+  background: url(/src/assets/image/ticket_selection/seoul2.png) no-repeat 50% 50% / cover;
 }
 .card:nth-child(2) {
-  background: url(/src/assets/image/ticket_selection/jeju1.jpg) no-repeat 50% 50% / cover;
+  background: url(/src/assets/image/ticket_selection/jeju1.png) no-repeat 50% 50% / cover;
 }
 .card:nth-child(2):hover {
-  background: url(/src/assets/image/ticket_selection/jeju2.jpg) no-repeat 50% 50% / cover;
+  background: url(/src/assets/image/ticket_selection/jeju2.png) no-repeat 50% 50% / cover;
 }
 .card:nth-child(3) {
-  background: url(/src/assets/image/ticket_selection/daegu1.jpg) no-repeat 50% 50% / cover;
+  background: url(/src/assets/image/ticket_selection/daegu1.png) no-repeat 50% 50% / cover;
 }
 .card:nth-child(3):hover {
-  background: url(/src/assets/image/ticket_selection/daegu2.jpg) no-repeat 50% 50% / cover;
+  background: url(/src/assets/image/ticket_selection/daegu2.png) no-repeat 50% 50% / cover;
 }
 .card:nth-child(4) {
-  background: url(/src/assets/image/ticket_selection/busan1.jpg) no-repeat 50% 50% / cover;
+  background: url(/src/assets/image/ticket_selection/busan1.png) no-repeat 50% 50% / cover;
 }
 .card:nth-child(4):hover {
-  background: url(/src/assets/image/ticket_selection/busan2.jpg) no-repeat 50% 50% / cover;
+  background: url(/src/assets/image/ticket_selection/busan2.png) no-repeat 50% 50% / cover;
 }
 .card:nth-child(5) {
-  background: url(/src/assets/image/ticket_selection/incheon1.jpg) no-repeat 50% 50% / cover;
+  background: url(/src/assets/image/ticket_selection/incheon1.png) no-repeat 50% 50% / cover;
 }
 .card:nth-child(5):hover {
-  background: url(/src/assets/image/ticket_selection/incheon2.jpg) no-repeat 50% 50% / cover;
+  background: url(/src/assets/image/ticket_selection/incheon2.png) no-repeat 50% 50% / cover;
 }
 .card:nth-child(6) {
-  background: url(/src/assets/image/ticket_selection/daejeon1.jpg) no-repeat 50% 50% / cover;
+  background: url(/src/assets/image/ticket_selection/daejeon1.png) no-repeat 50% 50% / cover;
 }
 .card:nth-child(6):hover {
-  background: url(/src/assets/image/ticket_selection/daejeon2.jpg) no-repeat 50% 50% / cover;
+  background: url(/src/assets/image/ticket_selection/daejeon2.png) no-repeat 50% 50% / cover;
 }
 .card:nth-child(7) {
-  background: url(/src/assets/image/ticket_selection/sokcho1.jpg) no-repeat 50% 50% / cover;
+  background: url(/src/assets/image/ticket_selection/sokcho1.png) no-repeat 50% 50% / cover;
 }
 .card:nth-child(7):hover {
-  background: url(/src/assets/image/ticket_selection/sokcho2.jpg) no-repeat 50% 50% / cover;
+  background: url(/src/assets/image/ticket_selection/sokcho2.png) no-repeat 50% 50% / cover;
 }
 .card:nth-child(8) {
-  background: url(/src/assets/image/ticket_selection/suwon1.jpg) no-repeat 50% 50% / cover;
+  background: url(/src/assets/image/ticket_selection/suwon1.png) no-repeat 50% 50% / cover;
 }
 .card:nth-child(8):hover {
-  background: url(/src/assets/image/ticket_selection/suwon2.jpg) no-repeat 50% 50% / cover;
+  background: url(/src/assets/image/ticket_selection/suwon2.png) no-repeat 50% 50% / cover;
 }
 .card:nth-child(9) {
-  background: url(/src/assets/image/ticket_selection/yeosu1.jpg) no-repeat 50% 50% / cover;
+  background: url(/src/assets/image/ticket_selection/yeosu1.png) no-repeat 50% 50% / cover;
 }
 .card:nth-child(9):hover {
-  background: url(/src/assets/image/ticket_selection/yeosu2.jpg) no-repeat 50% 50% / cover;
+  background: url(/src/assets/image/ticket_selection/yeosu2.png) no-repeat 50% 50% / cover;
 }
 .calendar-container {
   width: 100%
@@ -417,7 +415,7 @@ p {
   text-decoration: none;
   color: #fff;
 }
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 767px) {
   .cards-container {
     display: flex;
     flex-wrap: nowrap;
