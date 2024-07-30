@@ -6,8 +6,14 @@ import * as directives from 'vuetify/directives';
 import { aliases, mdi } from 'vuetify/iconsets/mdi';
 import '@mdi/font/css/materialdesignicons.css';
 
+// VNumberInput 컴포넌트 가져오기
+import { VNumberInput } from 'vuetify/labs/components';
+
 export default createVuetify({
-  components,
+  components: {
+    ...components,
+    VNumberInput,  // VNumberInput 컴포넌트 추가
+  },
   directives,
   // 아이콘 컴포넌트 쓴다고 선언해야지만 화면에 뜬다
   icons: {
@@ -17,5 +23,4 @@ export default createVuetify({
       mdi,
     },
   },
-})
-  ;
+});

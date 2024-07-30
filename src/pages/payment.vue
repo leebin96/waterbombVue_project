@@ -13,8 +13,6 @@
         </div>
         <div class="confirmOrder">
 
-
-
         </div>
       </div>
     </main>
@@ -32,6 +30,7 @@ export default {
     Footer,
   },
 };
+
 </script>
 
 <style scoped>

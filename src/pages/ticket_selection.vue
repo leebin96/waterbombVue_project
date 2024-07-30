@@ -5,7 +5,8 @@
       <div class="selectionBox">
         <div class="container">
           <div id="cards-container" class="cards-container">
-            <v-card v-for="(card, index) in cardsData" :key="index" class="card" @click="selectCard(index)">
+            <v-card v-for="(card, index) in cardsData" :key="index" class="card"
+              :class="{ selected: index === selectedCardIndex }" @click="selectCard(index)">
               <div>
                 <h3>{{ card.logo }}</h3>
               </div>
@@ -16,15 +17,41 @@
           </div>
           <div class="calendar-container">
             <div id="calendar">
-              <v-date-picker width="100%"></v-date-picker>
+              <v-date-picker width="100%" :allowed-dates="isDateSelectable" @input="onDateSelected"></v-date-picker>
             </div>
           </div>
           <div class="count">
-            <div class="countPick">
-              <v-col cols="12" sm="6">
-                <h5>수량 선택</h5>
-                <v-number-input control-variant="split" inset></v-number-input>
-              </v-col>
+            <v-col cols="12">
+              <h5>수량</h5>
+              <v-number-input variant="outlined" control-variant="split" inset class="countPickBt"
+                @input="updateQuantity"></v-number-input>
+            </v-col>
+
+            <v-col cols="12">
+              <div class="selection-info">
+                <span>선택 정보</span>
+                <div class="selected-info">
+                  <p>선택한 카드: <span id="selected-card">{{ selectedCard ? selectedCard.location : '없음' }}</span></p>
+                  <p>선택한 날짜: <span id="selected-date">{{ selectedDate ? selectedDate : '없음' }}</span></p>
+                  <p>선택한 수량: <span id="selected-quantity">{{ quantity }}</span></p>
+                </div>
+              </div>
+            </v-col>
+
+            <v-col cols="12">
+              <div class="price">
+                <span>총 결제 금액</span>
+                <div class="totalPrice">
+                  <span>{{ totalPrice }} 원</span>
+                </div>
+              </div>
+            </v-col>
+            <div class="payment">
+              <RouterLink to="/login" class="textDeco">
+                <v-btn class="payBt">
+                  결제하기
+                </v-btn>
+              </RouterLink>
             </div>
           </div>
         </div>
@@ -112,18 +139,60 @@ export default {
         },
       ],
       selectedCardIndex: null,
+      selectedDate: null,
+      quantity: 0,
+      pickerDate: new Date() // 달력의 초기 날짜
     };
+  },
+  computed: {
+    selectedCard() {
+      return this.selectedCardIndex !== null ? this.cardsData[this.selectedCardIndex] : null;
+    },
+    totalPrice() {
+      // 예시로 1장의 가격을 10,000원으로 설정
+      return this.quantity * 10000;
+    },
+  },
+  watch: {
+    selectedCard(newCard) {
+      if (newCard) {
+        // 카드가 선택되면 달력을 해당 카드의 첫 번째 날짜로 이동
+        this.pickerDate = newCard.dates[0];
+        this.selectedDate = null; // 날짜 초기화
+      }
+      console.log(this.pickerDate);
+    },
+    pickerDate(newDate) {
+      if (this.selectedCard && !this.selectedCard.dates.includes(newDate)) {
+        this.selectedDate = null; // 선택된 날짜가 변경되면 초기화
+      }
+    }
   },
   methods: {
     selectCard(index) {
       this.selectedCardIndex = index;
-      const selectedCard = this.cardsData[index];
-      alert(`선택한 카드: ${selectedCard.location} - ${selectedCard.date}`);
-      // 추가적인 카드 선택 로직을 여기에 작성할 수 있습니다.
+      this.selectedDate = null; // 새로운 카드를 선택할 때 날짜 초기화
+      this.quantity = 0; // 새로운 카드를 선택할 때 수량 초기화
+    },
+    updateQuantity(value) {
+      this.quantity = value;
+    },
+    onDateSelected(date) {
+      const selectedCard = this.selectedCard;
+      if (selectedCard && selectedCard.dates.includes(date)) {
+        this.selectedDate = date;
+      } else {
+        this.selectedDate = null;
+      }
+    },
+    isDateSelectable(date) {
+      const selectedCard = this.selectedCard;
+      return selectedCard ? selectedCard.dates.includes(date) : false;
     },
   },
 };
 </script>
+
 
 <style scoped>
 /* ticket_selection.vue 스타일 */
@@ -162,6 +231,7 @@ export default {
   box-sizing: border-box;
   background-color: #f9f9f9;
   border-radius: 8px;
+  gap: 10px;
 }
 .card:hover {
   cursor: pointer;
@@ -181,12 +251,18 @@ export default {
 .card > div > h3 {
   color: #fff;
   font-family: MoveSans;
-  font-size: 4px;
+  font-size: 14px;
   font-weight: 500;
   line-height: 7px;
+  border: 1px solid #fff;
+  display: flex;
+  padding: 5px;
+  text-align: center;
+  align-items: center;
+  border-radius: 5px;
 }
 h2 {
-  font-size: 16px;
+  font-size: 20px;
   line-height: 12px;
   font-weight: 700;
   margin-bottom: 0;
@@ -195,7 +271,7 @@ h3 {
   font-size: 20px;
 }
 p {
-  font-size: 9px;
+  font-size: 14px;
   font-weight: 500;
   line-height: 12px;
 }
@@ -272,15 +348,83 @@ p {
   max-width: 767px;
   gap: 10px;
 }
-.countPick {
+.countPick,
+.price {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
-  height: auto;
-  padding: 20px;
   border-radius: 16px;
   background: var(--Neutral-True-White, #fff);
   box-shadow: 0px 2px 16px 0px rgba(6, 51, 54, 0.1);
+  padding: 24px;
+}
+.countPick {
+  box-shadow: none;
+}
+.countPick span,
+.price span {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 135%;
+}
+.selection-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--Neutral-True-White, #fff);
+  border-radius: 16px;
+  box-shadow: 0px 2px 16px 0px rgba(6, 51, 54, 0.1);
+  padding: 24px;
+}
+.selected-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.selection-info span {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.selected-info p {
+  font-size: 14px;
+  margin: 5px 0;
+}
+.payment {
+  display: flex;
+  width: 216px;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+}
+.payBt {
+  display: flex;
+  width: 110px;
+  height: 30px;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  border: inherit;
+  background: #0aabff;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+.payBt:hover {
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+}
+.textDeco {
+  text-decoration: none;
+  color: #fff;
+}
+@media screen and (max-width: 768px) {
+  .cards-container {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow: auto;
+  }
+  .card {
+    flex: 0 0 70%;
+  }
 }
 </style>
