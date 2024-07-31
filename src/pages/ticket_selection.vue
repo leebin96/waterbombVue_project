@@ -5,8 +5,8 @@
       <div class="selectionBox">
         <div class="container">
           <div id="cards-container" class="cards-container">
-            <v-card v-for="(card, index) in cardsData" :key="index" class="card"
-              :class="{ selected: index === selectedCardIndex }" @click="selectCard(index)">
+            <v-card v-for="(card, index) in cards" :key="index" class="card"
+              :class="{ selected: selectedCardIndex === index }" @click="selectCard(card)">
               <div>
                 <h3>{{ card.logo }}</h3>
               </div>
@@ -15,27 +15,33 @@
               <p>{{ card.date }}</p>
             </v-card>
           </div>
-          <div class="calendar-container">
-            <div id="calendar">
-              <v-date-picker width="100%" :allowed-dates="isDateSelectable" @input="onDateSelected"></v-date-picker>
-            </div>
+          <!-- 카드 클릭시 날짜선택 버튼 출력 -->
+          <div v-if="selectedCard">
+            <v-btn v-for="date in selectedCard.dates" :key="date" @click="selectDate(date)">
+              {{ date }}
+            </v-btn>
           </div>
+          <!-- 카드 선택하고 날짜 선택, 갯수선택시 계산화면 -->
           <div class="count">
             <v-col cols="12">
               <h5>수량</h5>
-              <v-number-input variant="outlined" control-variant="split" inset class="countPickBt"
-                @input="updateQuantity"></v-number-input>
+              <v-number-input v-model="selectedQuantity" variant="outlined" control-variant="split" inset
+                class="countPickBt" />
             </v-col>
+
             <v-col cols="12">
               <div class="selection-info">
                 <span>선택 정보</span>
                 <div class="selected-info">
-                  <p>선택한 카드: <span id="selected-card">{{ selectedCard ? selectedCard.location : '없음' }}</span></p>
-                  <p>선택한 날짜: <span id="selected-date">{{ selectedDate ? selectedDate : '없음' }}</span></p>
-                  <p>선택한 수량: <span id="selected-quantity">{{ quantity }}</span></p>
+                  <div class="selected-info">
+                    <p>선택한 카드: <span id="selected-card">{{ selectedCard ? selectedCard.location : '없음' }}</span></p>
+                    <p>선택한 날짜: <span id="selected-date">{{ selectedDate }}</span></p>
+                    <p>선택한 수량: <span id="selected-quantity">{{ selectedQuantity }}</span></p>
+                  </div>
                 </div>
               </div>
             </v-col>
+
             <v-col cols="12">
               <div class="price">
                 <span>총 결제 금액</span>
@@ -46,7 +52,7 @@
             </v-col>
             <div class="payment">
               <RouterLink to="/login" class="textDeco">
-                <v-btn class="payBt">
+                <v-btn class="payBt" disabled="!selectedCard || !selectedDate">
                   결제하기
                 </v-btn>
               </RouterLink>
@@ -59,136 +65,94 @@
   </div>
 </template>
 
-<script>
+
+<script setup>
+import { ref, computed } from 'vue';
 import Header from '@/components/header.vue';
 import Footer from '@/components/footer.vue';
 
-export default {
-  name: 'TicketSelection',
-  components: {
-    Header,
-    Footer,
+const cardsData = [
+  {
+    location: "SEOUL",
+    logo: "WATERBOMB",
+    year: "2024",
+    date: "2024.5.7 (FRI-SUN)",
+    dates: ["2024-05-07", "2024-05-08", "2024-05-09"],
   },
-  data() {
-    return {
-      cardsData: [
-        {
-          location: "SEOUL",
-          logo: "WATERBOMB",
-          year: "2024",
-          date: "2024.5.7 (FRI-SUN)",
-          dates: ["2024-05-07", "2024-05-08", "2024-05-09"],
-        },
-        {
-          location: "JEJU",
-          logo: "WATERBOMB",
-          year: "2024",
-          date: "2024.7.20 (SAT)",
-          dates: ["2024-07-20"],
-        },
-        {
-          location: "DAEGU",
-          logo: "WATERBOMB",
-          year: "2024",
-          date: "2024.6.15 (SAT)",
-          dates: ["2024-06-15"],
-        },
-        {
-          location: "BUSAN",
-          logo: "WATERBOMB",
-          year: "2024",
-          date: "2024.5.25 (SAT)",
-          dates: ["2024-05-25"],
-        },
-        {
-          location: "INCHEON",
-          logo: "WATERBOMB",
-          year: "2024",
-          date: "2024.8.3 (SAT)",
-          dates: ["2024-08-03"],
-        },
-        {
-          location: "DAEJEON",
-          logo: "WATERBOMB",
-          year: "2024",
-          date: "2024.6.29 (SAT)",
-          dates: ["2024-06-29"],
-        },
-        {
-          location: "SOKCHO",
-          logo: "WATERBOMB",
-          year: "2024",
-          date: "2024.7.6 (SAT)",
-          dates: ["2024-07-06"],
-        },
-        {
-          location: "SUWON",
-          logo: "WATERBOMB",
-          year: "2024",
-          date: "2024.5.17 (FRI-SUN)",
-          dates: ["2024-05-17", "2024-05-18", "2024-05-19"],
-        },
-        {
-          location: "YEOSU",
-          logo: "WATERBOMB",
-          year: "2024",
-          date: "2024.8.10 (SAT)",
-          dates: ["2024-08-10"],
-        },
-      ],
-      selectedCardIndex: null,
-      selectedDate: null,
-      quantity: 0,
-      pickerDate: new Date() // 달력의 초기 날짜
-    };
+  {
+    location: "JEJU",
+    logo: "WATERBOMB",
+    year: "2024",
+    date: "2024.7.20 (SAT)",
+    dates: ["2024-07-20"],
   },
-  computed: {
-    selectedCard() {
-      return this.selectedCardIndex !== null ? this.cardsData[this.selectedCardIndex] : null;
-    },
-    totalPrice() {
-      // 예시로 1장의 가격을 10,000원으로 설정
-      return this.quantity * 10000;
-    },
+  {
+    location: "DAEGU",
+    logo: "WATERBOMB",
+    year: "2024",
+    date: "2024.6.15 (SAT)",
+    dates: ["2024-06-15"],
   },
-  watch: {
-    selectedCard(newCard) {
-      if (newCard) {
-        // 카드가 선택되면 달력을 해당 카드의 첫 번째 날짜로 이동
-        this.pickerDate = newCard.dates[0];
-        this.selectedDate = null; // 날짜 초기화
-      }
-      console.log(this.pickerDate);
-    },
-    pickerDate(newDate) {
-      if (this.selectedCard && !this.selectedCard.dates.includes(newDate)) {
-        this.selectedDate = null; // 선택된 날짜가 변경되면 초기화
-      }
-    }
+  {
+    location: "BUSAN",
+    logo: "WATERBOMB",
+    year: "2024",
+    date: "2024.5.25 (SAT)",
+    dates: ["2024-05-25"],
   },
-  methods: {
-    selectCard(index) {
-      this.selectedCardIndex = index;
-      this.selectedDate = null; // 새로운 카드를 선택할 때 날짜 초기화
-      this.quantity = 0; // 새로운 카드를 선택할 때 수량 초기화
-    },
-    updateQuantity(value) {
-      this.quantity = value;
-    },
-    onDateSelected(date) {
-      const selectedCard = this.selectedCard;
-      if (selectedCard && selectedCard.dates.includes(date)) {
-        this.selectedDate = date;
-      } else {
-        this.selectedDate = null;
-      }
-    },
-    isDateSelectable(date) {
-      const selectedCard = this.selectedCard;
-      return selectedCard ? selectedCard.dates.includes(date) : false;
-    },
+  {
+    location: "INCHEON",
+    logo: "WATERBOMB",
+    year: "2024",
+    date: "2024.8.3 (SAT)",
+    dates: ["2024-08-03"],
   },
+  {
+    location: "DAEJEON",
+    logo: "WATERBOMB",
+    year: "2024",
+    date: "2024.6.29 (SAT)",
+    dates: ["2024-06-29"],
+  },
+  {
+    location: "SOKCHO",
+    logo: "WATERBOMB",
+    year: "2024",
+    date: "2024.7.6 (SAT)",
+    dates: ["2024-07-06"],
+  },
+  {
+    location: "SUWON",
+    logo: "WATERBOMB",
+    year: "2024",
+    date: "2024.5.17 (FRI-SUN)",
+    dates: ["2024-05-17", "2024-05-18", "2024-05-19"],
+  },
+  {
+    location: "YEOSU",
+    logo: "WATERBOMB",
+    year: "2024",
+    date: "2024.8.10 (SAT)",
+    dates: ["2024-08-10"],
+  },
+];
+
+const selectedCard = ref(null);
+const selectedDate = ref(null);
+const selectedQuantity = ref(1);
+
+
+const cards = computed(() => cardsData);
+
+const totalPrice = computed(() => selectedQuantity.value * 10000);
+
+const selectCard = (card) => {
+  selectedCard.value = card;
 };
+const selectDate = (date) => {
+  selectedDate.value = date;
+};
+
 </script>
 
 
@@ -415,7 +379,7 @@ p {
   text-decoration: none;
   color: #fff;
 }
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 768px) {
   .cards-container {
     display: flex;
     flex-wrap: nowrap;

@@ -63,10 +63,45 @@
           </div>
         </div>
         <v-list class="checkBoxContainer">
-          <v-list-item>
-            <v-checkbox />
+          <v-list-item value="check1">
+            <template v-slot:prepend="{ isActive }">
+              <v-list-item-action start><span class="need">(필수)</span>
+                <v-checkbox-btn />
+              </v-list-item-action>
+            </template>
+            <v-list-item-subtitle class="overflow"><span class="termsInfo">
+                워터밤 2024는 만 19세 이상만 참여 가능하며, 2024년부터는 2005년 12월 31일 이전 출생자에 한해 입장이 가능합니다. (대학생이어도
+                06년생은 입장 불가합니다.)</span>
+            </v-list-item-subtitle>
+          </v-list-item>
+          <v-list-item value="check2">
+            <template v-slot:prepend="{ isActive }">
+              <v-list-item-action start><span class="need">(필수)</span>
+                <v-checkbox-btn />
+              </v-list-item-action>
+            </template>
+            <v-list-item-subtitle class="overflow"><span class="termsInfo">
+                티켓 발급 후 7일 이내 취소: 100% 환불 가능, 티켓 발급 후 3일 이내 취소: 50% 환불 가능, 당일 취소 및 노쇼: 환불 불가능, 티켓
+                양도: 불가능 합니다.</span>
+            </v-list-item-subtitle>
+          </v-list-item>
+          <v-list-item value="check3">
+            <template v-slot:prepend="{ isActive }">
+              <v-list-item-action start><span class="need">(필수)</span>
+                <v-checkbox-btn />
+              </v-list-item-action>
+            </template>
+            <v-list-item-subtitle class="overflow"><span class="termsInfo">
+                상기 결제정보를 확인하였으며, 구매진행에 동의합니다.
+              </span>
+            </v-list-item-subtitle>
           </v-list-item>
         </v-list>
+
+        <RouterLink to="/payment_success" class="btnConfirm">
+          <v-btn size="x-large" color="#0AABFF"> 확인 </v-btn>
+        </RouterLink>
+
       </div>
     </main>
     <Footer />
@@ -133,7 +168,7 @@ export default {
 .confirmOrder > p,
 .guestInfo .info p,
 .totalLabel p,
-.terms > div span,
+.checkBoxContainer > p,
 .paymentMethod p {
   font-weight: 700;
 }
@@ -176,9 +211,11 @@ export default {
   align-items: center;
   display: flex;
   justify-content: center;
-  height: 120px;
-  width: 110px;
+  height: 140px;
+  width: 140px;
   box-shadow: none;
+  gap: 7px;
+  padding: 0 20px;
 }
 .card > div {
   display: flex;
@@ -274,6 +311,7 @@ export default {
   justify-content: space-between;
   width: 100%;
   padding: 0 0 0 10px;
+  font-weight: 700;
 }
 .paymentMethod {
   display: flex;
@@ -336,10 +374,31 @@ export default {
   align-items: center;
   flex: 1 0 0;
 }
-.terms {
+.checkBoxContainer {
   display: flex;
   flex-direction: column;
   gap: 5px;
-  padding: 0 0 20px 0;
+  padding: 20px
+}
+
+.overflow {
+  display: flex;
+  overflow: initial;
+}
+.need {
+  font-size: 10px;
+  color: #D32F2F;
+}
+.termsInfo {
+  color: black;
+  font-weight: 700;
+}
+.btnConfirm {
+  display: inline-flex;
+  padding: 10px;
+  align-items: center;
+  flex-direction: column;
+  text-decoration: none;
+  align-self: center;
 }
 </style>
