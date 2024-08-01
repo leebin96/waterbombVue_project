@@ -68,91 +68,28 @@
 
 <script setup>
 import { ref, computed } from 'vue';
+import { useTicketStore } from '@/stores/ticketStore';
 import Header from '@/components/header.vue';
 import Footer from '@/components/footer.vue';
 
-const cardsData = [
-  {
-    location: "SEOUL",
-    logo: "WATERBOMB",
-    year: "2024",
-    date: "2024.5.7 (FRI-SUN)",
-    dates: ["2024-05-07", "2024-05-08", "2024-05-09"],
-  },
-  {
-    location: "JEJU",
-    logo: "WATERBOMB",
-    year: "2024",
-    date: "2024.7.20 (SAT)",
-    dates: ["2024-07-20"],
-  },
-  {
-    location: "DAEGU",
-    logo: "WATERBOMB",
-    year: "2024",
-    date: "2024.6.15 (SAT)",
-    dates: ["2024-06-15"],
-  },
-  {
-    location: "BUSAN",
-    logo: "WATERBOMB",
-    year: "2024",
-    date: "2024.5.25 (SAT)",
-    dates: ["2024-05-25"],
-  },
-  {
-    location: "INCHEON",
-    logo: "WATERBOMB",
-    year: "2024",
-    date: "2024.8.3 (SAT)",
-    dates: ["2024-08-03"],
-  },
-  {
-    location: "DAEJEON",
-    logo: "WATERBOMB",
-    year: "2024",
-    date: "2024.6.29 (SAT)",
-    dates: ["2024-06-29"],
-  },
-  {
-    location: "SOKCHO",
-    logo: "WATERBOMB",
-    year: "2024",
-    date: "2024.7.6 (SAT)",
-    dates: ["2024-07-06"],
-  },
-  {
-    location: "SUWON",
-    logo: "WATERBOMB",
-    year: "2024",
-    date: "2024.5.17 (FRI-SUN)",
-    dates: ["2024-05-17", "2024-05-18", "2024-05-19"],
-  },
-  {
-    location: "YEOSU",
-    logo: "WATERBOMB",
-    year: "2024",
-    date: "2024.8.10 (SAT)",
-    dates: ["2024-08-10"],
-  },
-];
-
-const selectedCard = ref(null);
-const selectedDate = ref(null);
-const selectedQuantity = ref(1);
-
-
-const cards = computed(() => cardsData);
-
-const totalPrice = computed(() => selectedQuantity.value * 10000);
+const ticketStore = useTicketStore();
 
 const selectCard = (card) => {
-  selectedCard.value = card;
-};
-const selectDate = (date) => {
-  selectedDate.value = date;
+  ticketStore.selectCard(card);
 };
 
+const selectDate = (date) => {
+  ticketStore.selectDate(date);
+};
+
+const selectedCard = computed(() => ticketStore.selectedCard);
+const selectedDate = computed(() => ticketStore.selectedDate);
+const selectedQuantity = computed({
+  get: () => ticketStore.selectedQuantity,
+  set: (value) => ticketStore.setQuantity(value)
+});
+const totalPrice = computed(() => ticketStore.totalPrice);
+const cards = computed(() => ticketStore.cards);
 </script>
 
 

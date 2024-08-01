@@ -17,20 +17,19 @@
         <div class="order">
           <div class="orderContents">
             <!-- selectedCard가 정의되어 있는지 확인 -->
-            <v-card v-if="selectedCard" class="card">
+            <v-card :class="selectedCard ? selectedCard.location : ''" class="card">
               <div>
-                <h3>{{ selectedCard.logo }}</h3>
+                <h3>{{ selectedCard?.logo }}</h3>
               </div>
-              <p>{{ selectedCard.year }}</p>
-              <h2>{{ selectedCard.location }}</h2>
-              <p>{{ selectedCard.date }}</p>
+              <p>{{ selectedCard?.year }}</p>
+              <h2>{{ selectedCard?.location }}</h2>
+              <p>{{ selectedDate }}</p>
             </v-card>
             <!-- selectedCard가 정의되지 않은 경우를 처리 -->
-            <p v-else>Loading...</p>
             <div class="regionSchedule">
-              <p>{{ selectedCard.logo }} {{ selectedCard.location }} {{ selectedCard.year }}</p>
-              <p>{{ selectedCard.date }} 오후 1:00</p>
-              <p>TICKETS(VIP_BLUE) 2 </p>
+              <p>{{ selectedCard?.logo }} {{ selectedCard?.location }} {{ selectedCard?.year }}</p>
+              <p>{{ selectedDate }} 오후 1:00</p>
+              <p>TICKETS(VIP_BLUE) {{ selectedQuantity }} </p>
               <!-- 티켓수량에 대한 정보 -->
             </div>
           </div>
@@ -59,7 +58,7 @@
         <div class="totalAmount">
           <div class="totalLabel">
             <p>총 결제금액</p>
-            <p>220,000원</p>
+            <p>{{ totalPrice }}원</p>
           </div>
         </div>
         <v-list class="checkBoxContainer">
@@ -108,36 +107,18 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { computed } from 'vue';
+import { useTicketStore } from '@/stores/ticketStore';
 import Header from '@/components/header.vue';
 import Footer from '@/components/footer.vue';
 
-export default {
-  components: {
-    Header,
-    Footer,
-  },
-  data() {
-    return {
-      cardsData: [
-        {
-          location: "SEOUL",
-          logo: "WATERBOMB",
-          year: "2024",
-          date: "2024.5.7 (FRI-SUN)",
-          dates: ["2024-05-07", "2024-05-08", "2024-05-09"],
-        },
-        // ... other card data
-      ],
-      selectedCard: null,  // 초기값을 null로 설정
-    };
-  },
-  created() {
-    // 임시로 SEOUL이 선택된 것으로 가정
-    const location = "SEOUL";
-    this.selectedCard = this.cardsData.find(card => card.location === location) || null;
-  },
-};
+const ticketStore = useTicketStore();
+
+const selectedCard = computed(() => ticketStore.selectedCard);
+const selectedDate = computed(() => ticketStore.selectedDate);
+const selectedQuantity = computed(() => ticketStore.selectedQuantity);
+const totalPrice = computed(() => ticketStore.totalPrice);
 </script>
 
 <style scoped>
@@ -251,60 +232,42 @@ export default {
   font-weight: 500;
   line-height: 12px;
 }
-.card:nth-child(1) {
+.card.SEOUL {
   background: url(/src/assets/image/ticket_selection/seoul1.png) no-repeat 50% 50% / cover;
 }
-.card:nth-child(1):hover {
-  background: url(/src/assets/image/ticket_selection/seoul2.png) no-repeat 50% 50% / cover;
-}
-.card:nth-child(2) {
+
+.card.JEJU {
   background: url(/src/assets/image/ticket_selection/jeju1.png) no-repeat 50% 50% / cover;
 }
-.card:nth-child(2):hover {
-  background: url(/src/assets/image/ticket_selection/jeju2.png) no-repeat 50% 50% / cover;
-}
-.card:nth-child(3) {
+
+.card.DAEGU {
   background: url(/src/assets/image/ticket_selection/daegu1.png) no-repeat 50% 50% / cover;
 }
-.card:nth-child(3):hover {
-  background: url(/src/assets/image/ticket_selection/daegu2.png) no-repeat 50% 50% / cover;
-}
-.card:nth-child(4) {
+
+.card.BUSAN {
   background: url(/src/assets/image/ticket_selection/busan1.png) no-repeat 50% 50% / cover;
 }
-.card:nth-child(4):hover {
-  background: url(/src/assets/image/ticket_selection/busan2.png) no-repeat 50% 50% / cover;
-}
-.card:nth-child(5) {
+
+.card.INCHEON {
   background: url(/src/assets/image/ticket_selection/incheon1.png) no-repeat 50% 50% / cover;
 }
-.card:nth-child(5):hover {
-  background: url(/src/assets/image/ticket_selection/incheon2.png) no-repeat 50% 50% / cover;
-}
-.card:nth-child(6) {
+
+.card.DAEJEON {
   background: url(/src/assets/image/ticket_selection/daejeon1.png) no-repeat 50% 50% / cover;
 }
-.card:nth-child(6):hover {
-  background: url(/src/assets/image/ticket_selection/daejeon2.png) no-repeat 50% 50% / cover;
-}
-.card:nth-child(7) {
+
+.card.SOKCHO {
   background: url(/src/assets/image/ticket_selection/sokcho1.png) no-repeat 50% 50% / cover;
 }
-.card:nth-child(7):hover {
-  background: url(/src/assets/image/ticket_selection/sokcho2.png) no-repeat 50% 50% / cover;
-}
-.card:nth-child(8) {
+
+.card.SUWON {
   background: url(/src/assets/image/ticket_selection/suwon1.png) no-repeat 50% 50% / cover;
 }
-.card:nth-child(8):hover {
-  background: url(/src/assets/image/ticket_selection/suwon2.png) no-repeat 50% 50% / cover;
-}
-.card:nth-child(9) {
+
+.card.YEOSU {
   background: url(/src/assets/image/ticket_selection/yeosu1.png) no-repeat 50% 50% / cover;
 }
-.card:nth-child(9):hover {
-  background: url(/src/assets/image/ticket_selection/yeosu2.png) no-repeat 50% 50% / cover;
-}
+
 .regionSchedule {
   display: flex;
   flex-direction: column;
